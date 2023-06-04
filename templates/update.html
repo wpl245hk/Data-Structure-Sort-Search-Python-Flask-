@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Update</title>
+{% endblock %}
+
+{% block body %}
+<div class="Items">
+    <h1>Update item</h1>
+    <table>
+        <tr>
+            <td>{{ update_item.item }}</td>
+            <td>{{ update_item.id }}</td>
+            <td>{{ update_item.date_created.date() }}</td>
+        </tr>
+    </table>
+    <form action="/update/{{ update_item.id }}" method="POST">
+        <input type="text" name="update_item.item" id="update_item.item">
+        <button value="Update">submit</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>List Your Things</title>
+{% endblock %}
+
+{% block body %}
+<div class="Items">
+    <h1>Add Drop</h1>
+    {% if submitted_adds|length < 1 %}
+    <h4>There is no item. Please add one on below</h4>
+    {% else %}
+    <table>
+        <tr>
+            <th>Item</th>
+            <th>ID</th>
+            <th>Creation Time</th>
+            <th>Actions</th>
+        </tr>
+        {% for submitted_add in submitted_adds %}
+        <tr>
+            <td>{{ submitted_add.item }}</td>
+            <td>{{ submitted_add.id }}</td>
+            <td>{{ submitted_add.date_created.date() }}</td>
+            <td>
+                <a href="/update/{{ submitted_add.id }}">Update</a>
+                <br>
+                <a href="/delete/{{ submitted_add.id }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <form action="/" method="POST">
+        <input type="text" name="item" id="item">
+        <button value="Add Item">submit</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,39 +1,99 @@
 {% extends "base.html" %}
 
 {% block head %}
-<title>List Your Things</title>
+<title>Wilson Data Structure</title>
 {% endblock %}
 
 {% block body %}
 <div class="Items">
-    <h1>Add Drop</h1>
-    {% if submitted_adds|length < 1 %}
+    <h1>Simple Data Structure</h1>
+    {% if submitted_add_items|length < 1 %}
     <h4>There is no item. Please add one on below</h4>
     {% else %}
+
+
+
     <table>
         <tr>
             <th>Item</th>
-            <th>ID</th>
+            <th>Data Structure</th>
             <th>Creation Time</th>
             <th>Actions</th>
         </tr>
-        {% for submitted_add in submitted_adds %}
+
+        {% for submitted_add_item in submitted_add_items %}
         <tr>
-            <td>{{ submitted_add.item }}</td>
-            <td>{{ submitted_add.id }}</td>
-            <td>{{ submitted_add.date_created.date() }}</td>
+            <td class="inputValues">
+                {% for input_value in submitted_add_item.item.split() %} 
+                <div class="inputValue">{{ input_value }}</div>
+                {% endfor %}
+            </td>
+            <td>{{ submitted_add_item.data_structure }}</td> 
+            <td>{{ submitted_add_item.date_created.date() }}</td> 
             <td>
-                <a href="/update/{{ submitted_add.id }}">Update</a>
+                <a href="/update/{{ submitted_add_item.id }}">Update</a>
                 <br>
-                <a href="/delete/{{ submitted_add.id }}">Delete</a>
+                <a href="/delete/{{ submitted_add_item.id }}">Delete</a>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                {% if submitted_add_item.data_structure == "Python list" %}
+                <form action="/sort/{{ submitted_add_item.id }}" method="POST">
+                    <label for="sortItem">Please choose a sort method</label>
+                        <select name="sortItem">
+                            <option value="Random" >(Random)</option>
+                            <option value="Bubble Sort">Bubble Sort</option>
+                            <option value="Insertion Sort">Insertion Sort</option>
+                        </select>
+                        <button id="sortButton" value="sortItem">sort</button>
+                </form>
+                {% endif %}
+                {% if submitted_add_item.sort_time > 0  %}
+                <p>Sort time is {{ submitted_add_item.sort_time }}</p>
+                {% endif %}
+
+                <form action="/search/{{ submitted_add_item.id }}" method="POST">
+                    <label for="searchItem">Please choose a search item</label>
+                        <select name="searchItem">
+                            {% for i in range(10) %}
+                            <option value="{{ i }}">{{ i+1 }}</option>    
+                            {% endfor %}
+                        </select>
+                        <button id="searchButton" value="searchItem">search</button>
+                </form>
+                {% if submitted_add_item.search_time > 0  %}
+                <p>Search time is {{ submitted_add_item.search_time }}</p>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}
     </table>
     {% endif %}
+
     <form action="/" method="POST">
-        <input type="text" name="item" id="item">
-        <button value="Add Item">submit</button>
+        <div>
+            <label for="data_structure">Please choose a data structure</label>
+            <select name="data_structure">
+                <option value="Random" >(Random)</option>
+                <option value="Python list">Python list</option>
+                <option value="Linked list">Linked list</option>
+                <option value="Binary Search Tree">Binary Search Tree</option>
+            </select><br>
+        </div>
+        <div>
+            <p>Please choose either auto-generated or customer generated list of size 10</p>
+            <input type="radio" name="data" id ="data1" value="auto" required>
+            <label for="data1">Auto-generation</label>
+            <input type="radio" name="data" id ="data2" >
+            <label for="data2">Custom-generation 
+                <input type="text" name="item" id="item" placeholder="1 2 3" pattern="^(\s)*(\d+\s+){9}\d+(\s)*$">
+            </label><br>
+        </div>
+
+        <button id="submitButton" value="AddItem">submit</button>
     </form>
+
 </div>
 {% endblock %}

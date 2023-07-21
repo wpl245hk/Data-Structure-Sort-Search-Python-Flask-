@@ -9,14 +9,40 @@
     <h1>Update item</h1>
     <table>
         <tr>
-            <td>{{ update_item.item }}</td>
-            <td>{{ update_item.id }}</td>
+            <th>Item</th>
+            <th>Data Structure</th>
+            <th>Creation Time</th>
+        </tr>
+        <tr>
+
+
+            <td class="inputValues">
+                {% for input_value in update_item.item.split() %} 
+                <div class="inputValue">
+                    {{ input_value }}
+                </div>
+                {% endfor %}
+            </td>
+            <td>{{ update_item.data_structure }}</td>
             <td>{{ update_item.date_created.date() }}</td>
         </tr>
     </table>
-    <form action="/update/{{ update_item.id }}" method="POST">
-        <input type="text" name="update_item.item" id="update_item.item">
-        <button value="Update">submit</button>
-    </form>
+    <div class="updateSubmitBack">
+        <form action="/update/{{ update_item.id }}" method="POST">
+            <label for="updateItemIndex">Please choose a update item</label>
+            <select name="updateItemIndex">
+                {% for i in range(update_item.item.split() | length) %}
+                <option value="{{ i }}">{{ i+1 }}</option>    
+                {% endfor %}
+            </select>
+            <input type="text" name="update_item_value" id="update_item_value" pattern="^(\s)*\d{1,3}(\s)*$" style="width:40px">
+            <button value="Update">update</button>
+        </form>
+        <form action="/" method="GET">
+            <button value="back" >back</button>
+        </form>
+    </div>
+
+    
 </div>
 {% endblock %}

@@ -1,4 +1,65 @@
 body {
-    margin: 50;
+    margin: 20;
     font-family: sans-serif;
+    background-color:lightblue;
+}
+
+table {
+    border:2px dashed whitesmoke;
+    margin:10px;
+    padding:1px;
+}
+
+td {
+    padding: 10px;
+    justify-content: space-between;
+}
+
+a {
+    display:block;
+}
+
+a,button {
+    text-decoration: none;
+    background-color: lightgray;
+    color:black;
+    padding: 3px;
+    border: 1px solid black;
+    font-size: 12px;
+    text-align: center;
+}
+
+.inputValues {
+    margin: 5px;
+    padding: 2px;
+    width: 50%;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content: flex-start;
+}
+
+.inputValue {
+    background-color: yellow;
+    color:black;
+    border: 2px solid blue;
+    height: 20px;
+    width: auto;
+    padding:10px;
+    margin:10px;
+    text-align:center;
+}
+
+.inputValue + input {
+    height: 20px;
+    align-self: center;
+}
+
+.updateSubmitBack {
+    display:flex;
+}
+
+footer {
+    position:fixed;
+    left:45%;
+    bottom: 1%;
 }

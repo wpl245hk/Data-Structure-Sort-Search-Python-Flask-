@@ -32,18 +32,24 @@ def index():
         return render_template("index.html", submitted_add_items =submitted_add_items)
         
     else:
-        if request.form['data']:
-            item =" ".join(map(str,random.choices(list(range(999)), k = 10)))
-            if request.form['data_structure'] != "Random":
-                new_add = Items_Model(item=item, data_structure= request.form['data_structure'])
-            else:
-                new_add = Items_Model(item=item, data_structure= random.choice(['Python list', 'Linked list', 'Binary Search Tree']))
+        new_add_all = []
+        if request.form['generate'] == 'auto':
+            item =" ".join(map(str,random.choices(list(range(999)), k = 20)))
         else:
-            submit_item = request.form['item']
-            new_add = Items_Model(item=submit_item)
+            item = request.form['custom']
+
+        if request.form.get('Python list'):
+            new_add_all.append(Items_Model(item=item, data_structure=request.form['Python list'])) 
+        if request.form.get('Linked list'):
+            new_add_all.append(Items_Model(item=item, data_structure=request.form['Linked list']))
+        if request.form.get('Binary Search Tree'):
+            new_add_all.append(Items_Model(item=item, data_structure=request.form['Binary Search Tree']))
+
+        if not new_add_all:
+            new_add_all.append(Items_Model(item=item, data_structure=random.choice(['Python list', 'Linked list', 'Binary Search Tree'])))
 
         try:
-            db.session.add(new_add)
+            db.session.add_all(new_add_all)
             db.session.commit()
             return redirect('/')
         except:
@@ -57,9 +63,7 @@ def update(id):
         return render_template('update.html', update_item=update_item)
         
     else:
-        temp = update_item.item.split()
-        temp[int(request.form['updateItemIndex'])] = request.form['update_item_value']
-        update_item.item = " ".join(temp )
+        update_item.item = " ".join([request.form[str(i)] for i in range(len(update_item.item.split()))] )
         try:
             db.session.commit()
             return redirect('/')

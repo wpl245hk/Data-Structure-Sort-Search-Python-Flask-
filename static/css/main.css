@@ -1,8 +1,12 @@
 body {
-    margin: 20;
     font-family: sans-serif;
     background-color:lightblue;
 }
+
+main {
+
+}
+
 
 table {
     border:2px dashed whitesmoke;
@@ -11,12 +15,28 @@ table {
 }
 
 td {
-    padding: 10px;
+    padding: 5px;
+    text-align: right;
     justify-content: space-between;
+    
+}
+
+fieldset {
+    border: none;
+    margin:0;
+    padding:5px;
+}
+
+label > input {
+    width:20%;
 }
 
 a {
-    display:block;
+    display:inline-block;
+}
+
+mark  {
+    background-color: yellowgreen;
 }
 
 a,button {
@@ -29,13 +49,18 @@ a,button {
     text-align: center;
 }
 
+.button_update {
+    background-color:rgb(88, 191, 255); 
+    color: white;
+} 
+
 .inputValues {
     margin: 5px;
     padding: 2px;
-    width: 50%;
+    width: 700px;
     display:flex;
     flex-flow:row nowrap;
-    justify-content: flex-start;
+    justify-content: space-between;
 }
 
 .inputValue {
@@ -43,19 +68,18 @@ a,button {
     color:black;
     border: 2px solid blue;
     height: 20px;
-    width: auto;
-    padding:10px;
-    margin:10px;
-    text-align:center;
+    width: 20px;
+    padding:5px 10px;
+
 }
 
-.inputValue + input {
-    height: 20px;
-    align-self: center;
+input.inputValue   {
+    background-color: lightgoldenrodyellow;
 }
 
-.updateSubmitBack {
-    display:flex;
+
+.updateBack {
+    margin:20px;
 }
 
 footer {

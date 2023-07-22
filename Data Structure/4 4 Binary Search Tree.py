@@ -1,5 +1,4 @@
 import timeit
-import copy
 
 class BST_node():
     def __init__(self, value):
@@ -34,18 +33,6 @@ class BST():
                     break
                 curr = curr.right
 
-
-    def sort(self):
-        starttime = timeit.default_timer()
-        curr = self.root
-        while curr:
-            if data_item == curr.value:
-                return timeit.default_timer() - starttime
-            elif data_item < curr.value:
-                curr = curr.left
-            else:
-                curr = curr.right
-        return 0
 
     def search(self, data_item):
         starttime = timeit.default_timer()

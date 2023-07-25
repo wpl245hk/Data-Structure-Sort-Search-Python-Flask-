@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block head %}
-<title>Wilson Data Structure</title>
+<title>Wilson's Data Structure Demo</title>
 {% endblock %}
 
 {% block body %}
 <main>
-    <h1>Simple Data Structure</h1>
+    <h1>Simple Data Structure, Sort and Search</h1>
     {% if submitted_add_items|length < 1 %}
     <h4>There is no item. Please add one on below</h4>
     {% else %}
@@ -44,35 +44,44 @@
         </tr>
 
         <tr>
-            {% if submitted_add_item.data_structure == "Python list" %}
+            
             <form action="/sort/{{ submitted_add_item.id }}" method="POST">
                 <td>
-                    <label for="sortItem">Please choose a sort method</label>
+                    <label for="sortItem">Sort time (average 10 trials):</label>
                 </td>
                 <td>
+                    {% if submitted_add_item.data_structure == "Python list" %}
                     <select name="sortItem">
                         <option value="Bubble Sort">Bubble Sort</option>
                         <option value="Insertion Sort">Insertion Sort</option>
                     </select>
-                </td>
+                    {% elif submitted_add_item.data_structure == "Linked list" %}
+                    <label>Bubble Sort</label>
+                    {% elif submitted_add_item.data_structure == "Binary Search Tree" %}
+                    <label>Insertion</label>
+                    {% endif %}
+                </td>              
                 <td>
+                    {% if submitted_add_item.data_structure != "Binary Search Tree" %}
                     <button id="sortButton" value="sortItem">Sort</button>
-                </td>
+                    {% endif %}
+                </td>           
                 <td class="td_center">
                     {% if submitted_add_item.sort_time > 0  %}
                     <output><mark>{{ submitted_add_item.sort_time }}</mark></output>
                     {% endif %}
                 </td>
             </form>
-            {% endif %}
+            
         </tr>
         <tr>
             <form action="/search/{{ submitted_add_item.id }}" method="POST">
                 <td>
-                    <label for="searchItem">Please choose a search item</label>
+                    <p>Search time (average 10 trials):</p>
                 </td>
                 <td>
-                    <select name="searchItem">
+                    <label for="searchItem">search item</label>
+                    <select name="searchItem">   
                         {% for i in range(submitted_add_item.item.split() | length) %}
                         <option value="{{ i }}">{{ i+1 }}</option>    
                         {% endfor %}
@@ -95,19 +104,19 @@
     <form action="/" method="POST">
         <legend hidden>Number</legend>
         <fieldset>
-            <label for="data_structure">Please choose a data structure</label>
+            <p>Please choose a data structure, otherwise default is random</p>
                 <input type="checkbox" name="Python list" value="Python list"><label for="data1">Python list</label>
                 <input type="checkbox" name="Linked list" value="Linked list"><label for="data1">Linked list</label>
                 <input type="checkbox" name="Binary Search Tree" value="Binary Search Tree"><label for="data1">Binary Search Tree</label>
         </fieldset>
         <fieldset>
-            <label for="generate">Please choose a list of size =1-20, values = -999 to 999</label>
+            <p>Please choose a list of size = (10 to 20), values = (-999 to 999)</p>
             <input type="radio" name="generate" id ="data1" value="auto" checked required><label for="data1">Auto-generation</label>
             <input type="radio" name="generate" id ="data2" >
             <label for="custom">Custom-generation 
-                <input type="text" name="custom" id="item" pattern="^(\s)*(-?\d{1,3}\s+){9,20}-?\d{1,3}(\s)*$" value="1 2 3 4 5 6 7 8 9 10"></textarea>
-            </label><br>
-        </fieldset>
+                <input type="text" name="custom" id="item" pattern="^(\s)*(-?\d{1,3}\s+){9,20}-?\d{1,3}(\s)*$" value="1 2 3 4 5 6 7 8 9 10"></input>
+            </label>
+        </fieldset><br>
 
         <button id="submitButton" value="AddItem">Create</button>
     </form>

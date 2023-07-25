@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from datetime import time, datetime
+from datetime import datetime
 from importlib import import_module, __import__
-import os, sys, timeit, random
+import os, sys, random
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "Data Structure"))
 
@@ -43,7 +43,11 @@ def index():
         if request.form.get('Linked list'):
             new_add_all.append(Items_Model(item=item, data_structure=request.form['Linked list']))
         if request.form.get('Binary Search Tree'):
-            new_add_all.append(Items_Model(item=item, data_structure=request.form['Binary Search Tree']))
+            data_mode = import_module('Data Structure.4 4 Binary Search Tree')
+            data_instance = data_mode.BST([int(x) for x in item.split()])
+            sort_time = data_instance.sort_time
+            new_add_all.append(Items_Model(item=item, data_structure=request.form['Binary Search Tree'], sort_time=sort_time))
+
 
         if not new_add_all:
             new_add_all.append(Items_Model(item=item, data_structure=random.choice(['Python list', 'Linked list', 'Binary Search Tree'])))
@@ -85,17 +89,24 @@ def delete(id):
 def sort(id):
     sort_item = Items_Model.query.get_or_404(id)
 
-    if request.form['sortItem'] == "Bubble Sort":
-        sort_mode = import_module('Data Structure Sort.1 Bubble Sort')
-        sort_ans = sort_mode.bubble_sort(list(map(int,sort_item.item.split())))
-        sort_item.item = " ".join(list(map(str,sort_ans[0])))
-        sort_item.sort_time = sort_ans[1]
-    elif request.form['sortItem'] == "Insertion Sort":
-        sort_mode = import_module('Data Structure Sort.3 Insertion Sort')
-        sort_ans = sort_mode.insertion_sort(list(map(int,sort_item.item.split())))
-        sort_item.item = " ".join(list(map(str,sort_ans[0])))
-        sort_item.sort_time = sort_ans[1]
-    
+    if sort_item.data_structure == "Python list":
+        if request.form['sortItem'] == "Bubble Sort":
+            sort_mode = import_module('Data Structure Sort.1 Bubble Sort')
+            sort_ans = sort_mode.bubble_sort(list(map(int,sort_item.item.split())))
+            sort_item.item = " ".join(list(map(str,sort_ans[0])))
+            sort_item.sort_time = sort_ans[1]
+        elif request.form['sortItem'] == "Insertion Sort":
+            sort_mode = import_module('Data Structure Sort.3 Insertion Sort')
+            sort_ans = sort_mode.insertion_sort(list(map(int,sort_item.item.split())))
+            sort_item.item = " ".join(list(map(str,sort_ans[0])))
+            sort_item.sort_time = sort_ans[1]
+    elif sort_item.data_structure == "Linked list":
+            sort_mode = import_module('Data Structure.2 1 Linked list')
+            data_instance = sort_mode.LinkedList()
+            for i in [int(x) for x in sort_item.item.split()]:
+                data_instance.insertTail(i)
+            sort_item.sort_time = data_instance.bubbleSort()[1]
+
     try:
         db.session.commit()
         return redirect('/')
@@ -109,19 +120,19 @@ def search(id):
 
     if search_item.data_structure == "Python list":
         data_mode = import_module('Data Structure.1 1 List')
-        search_item.search_time = data_mode.search(search_item_list, search_item_list[int(request.form['searchItem'])])
+        search_item.search_time = data_mode.search(search_item_list, search_item_list[int(request.form['searchItem'])])[1]
 
     elif search_item.data_structure == "Linked list":
         data_mode = import_module('Data Structure.2 1 Linked list')
         data_instance = data_mode.LinkedList()
         for i in search_item_list:
             data_instance.insertTail(i)
-        search_item.search_time = data_instance.searchNodeTime(search_item_list[int(request.form['searchItem'])])
+        search_item.search_time = data_instance.searchNodeTime(search_item_list[int(request.form['searchItem'])])[1]
 
     elif search_item.data_structure == "Binary Search Tree":
         data_mode = import_module('Data Structure.4 4 Binary Search Tree')
         data_instance = data_mode.BST(search_item.item.split())
-        search_item.search_time = data_instance.search(search_item_list[int(request.form['searchItem'])])
+        search_item.search_time = data_instance.search(search_item_list[int(request.form['searchItem'])])[1]
 
     try:
         db.session.commit()

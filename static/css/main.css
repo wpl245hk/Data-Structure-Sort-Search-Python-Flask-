@@ -4,14 +4,17 @@ body {
 }
 
 main {
-
+    text-align: center;
 }
-
 
 table {
     border:2px dashed whitesmoke;
-    margin:10px;
+    margin:10px auto;
     padding:1px;
+}
+
+th {
+    padding: 8px;
 }
 
 td {
@@ -77,13 +80,16 @@ input.inputValue   {
     background-color: lightgoldenrodyellow;
 }
 
+p {
+    margin:5px;
+}
 
 .updateBack {
     margin:20px;
 }
 
 footer {
-    position:fixed;
-    left:45%;
-    bottom: 1%;
+    margin-top: 30px;
+    color: lightslategray;
+    text-align: center;
 }

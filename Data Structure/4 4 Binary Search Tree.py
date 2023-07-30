@@ -7,8 +7,10 @@ class BST_node():
         self.right = None
 
 class BST():
-    def __init__(self, root):
-        if type(root) is int:
+    def __init__(self, root=None):
+        if root is None:
+            pass
+        elif type(root) is int:
             self.root = BST_node(root)
         else:
             self.sort_time = self.sort(root)[1]

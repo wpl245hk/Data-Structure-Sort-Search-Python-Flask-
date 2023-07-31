@@ -1,0 +1,8 @@
+Virtualenv env
+.\\env\Scripts\activate.bat
+Pip3 install flask flask-sqlalchemy
+
+
+from app import app, db
+app.app_context().push()
+db.create_all()

@@ -62,21 +62,21 @@ class Graph():
         
 
 # test cases
-g = Graph([(0, 1), (2, 0)])
-g.add_edge(4, 3)
-g.add_edge(4, 2)
-g.add_edge(1, 0)
-g.add_edge(0, 2)
-g.add_edge(1, 3)
-g.add_edge(3, 1)
-g.add_edge(1, 4)
+#g = Graph([(0, 1), (2, 0)])
+#g.add_edge(4, 3)
+#g.add_edge(4, 2)
+#g.add_edge(1, 0)
+#g.add_edge(0, 2)
+#g.add_edge(1, 3)
+#g.add_edge(3, 1)
+#g.add_edge(1, 4)
 #g.tranverse()
 # output:{'0': ['1', '2'],
 #         '1': ['0', '3', '4'],
 #         '2': ['0'],
 #         '3': ['1'],
 #         '4': ['2', '3']}
-g.dfs(0)
+#g.dfs(0)
 # output: 0->1->3->4->2
 #g.bfs(0)
 # output: 0->1->2->3->4 

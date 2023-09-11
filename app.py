@@ -29,15 +29,18 @@ class Items_Model(db.Model):
 def index():
     if request.method == 'GET':
         submitted_add_items = Items_Model.query.order_by(Items_Model.date_created).all()
+        #Items_Model.query.order_by(Items_Model.date_created).all()
+        #db.session.execute(db.select(Items_Model).order_by(Items_Model.date_created)).all()
+
         return render_template("index.html", submitted_add_items =submitted_add_items)
         
     else:
-        new_add_all = []
         if request.form['generate'] == 'auto':
             item =" ".join(map(str,random.choices(list(range(999)), k = 20)))
         else:
             item = request.form['custom']
 
+        new_add_all = []
         if request.form.get('Python list'):
             new_add_all.append(Items_Model(item=item, data_structure=request.form['Python list'])) 
         if request.form.get('Linked list'):
@@ -47,7 +50,6 @@ def index():
             data_instance = data_mode.BST([int(x) for x in item.split()])
             sort_time = data_instance.sort_time
             new_add_all.append(Items_Model(item=item, data_structure=request.form['Binary Search Tree'], sort_time=sort_time))
-
 
         if not new_add_all:
             new_add_all.append(Items_Model(item=item, data_structure=random.choice(['Python list', 'Linked list', 'Binary Search Tree'])))
@@ -61,7 +63,7 @@ def index():
 
 @app.route('/update/<int:id>', methods=['GET','POST'])
 def update(id):
-    update_item = Items_Model.query.get_or_404(id)
+    update_item = db.get_or_404(Items_Model,id)
 
     if request.method == 'GET':
         return render_template('update.html', update_item=update_item)
@@ -76,7 +78,7 @@ def update(id):
 
 @app.route('/delete/<int:id>')
 def delete(id):
-    delete_item = Items_Model.query.get_or_404(id)
+    delete_item = db.get_or_404(Items_Model,id)
 
     try:
         db.session.delete(delete_item)
@@ -87,7 +89,7 @@ def delete(id):
     
 @app.route('/sort/<id>', methods=['GET','POST'])
 def sort(id):
-    sort_item = Items_Model.query.get_or_404(id)
+    sort_item = db.get_or_404(Items_Model,id)
 
     if sort_item.data_structure == "Python list":
         if request.form['sortItem'] == "Bubble Sort":
@@ -115,7 +117,7 @@ def sort(id):
 
 @app.route('/search/<id>', methods=['GET','POST'])
 def search(id):
-    search_item = Items_Model.query.get_or_404(id)
+    search_item = db.get_or_404(Items_Model,id)
     search_item_list = search_item.item.split()
 
     if search_item.data_structure == "Python list":
